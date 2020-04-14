@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.EducationMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Education">
+    <id column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="etime" jdbcType="VARCHAR" property="etime" />
+    <result column="edesc" jdbcType="VARCHAR" property="edesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    eid, tid, etime, edesc
+  </sql>
+  <!-- 添加教育经历 -->
+  <insert id="addEducation" parameterType="com.change.achievement.entity.Education">
+    insert into t_education (tid, etime, edesc)
+    values ( #{tid,jdbcType=VARCHAR}, #{etime,jdbcType=VARCHAR}, #{edesc,jdbcType=VARCHAR})
+  </insert>
+	<!-- 查询教育经历 -->  
+  <select id="selectEducation" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_education
+    where tid = #{tid,jdbcType=VARCHAR} 
+  </select>
+	<!-- 删除教育经历 -->  
+  <delete id="delEducation" parameterType="java.lang.Integer">
+    delete from t_education 
+    where eid = #{eid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Education">
+    insert into t_education
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        eid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="etime != null">
+        etime,
+      </if>
+      <if test="edesc != null">
+        edesc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="etime != null">
+        #{etime,jdbcType=VARCHAR},
+      </if>
+      <if test="edesc != null">
+        #{edesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Education">
+    update t_education
+    <set>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="etime != null">
+        etime = #{etime,jdbcType=VARCHAR},
+      </if>
+      <if test="edesc != null">
+        edesc = #{edesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Education">
+    update t_education
+    set tid = #{tid,jdbcType=VARCHAR},
+      etime = #{etime,jdbcType=VARCHAR},
+      edesc = #{edesc,jdbcType=VARCHAR}
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+</mapper>

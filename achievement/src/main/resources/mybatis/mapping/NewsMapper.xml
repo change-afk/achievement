@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.News">
+    <id column="nid" jdbcType="INTEGER" property="nid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="ncontent" jdbcType="VARCHAR" property="ncontent" />
+    <result column="ntime" jdbcType="VARCHAR" property="ntime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    nid, name, ncontent, ntime
+  </sql>
+  <!-- 增加新闻信息 -->
+  <insert id="addNews" parameterType="com.change.achievement.entity.News">
+    insert into t_news (nid, name, ncontent, ntime)
+    values (#{nid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ncontent,jdbcType=VARCHAR}, #{ntime,jdbcType=VARCHAR})
+  </insert>
+  <!-- 根据id删除信息 -->
+   <delete id="delById" parameterType="java.lang.Integer">
+    delete from t_news
+    where nid = #{nid,jdbcType=INTEGER}
+  </delete>
+  <!-- 查询新闻条数 -->
+  <select id="selectNewsCount" resultType="java.lang.Integer">
+    select count(*) from t_news
+  </select>
+  <!-- 查询新闻 -->
+  <select id="selectNews" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from t_news 
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id查询 -->
+  <select id="selById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_news
+    where nid = #{nid,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_news
+    where nid = #{nid,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.News">
+    insert into t_news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nid != null">
+        nid,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="ncontent != null">
+        ncontent,
+      </if>
+      <if test="ntime != null">
+        ntime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nid != null">
+        #{nid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ncontent != null">
+        #{ncontent,jdbcType=VARCHAR},
+      </if>
+      <if test="ntime != null">
+        #{ntime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.News">
+    update t_news
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ncontent != null">
+        ncontent = #{ncontent,jdbcType=VARCHAR},
+      </if>
+      <if test="ntime != null">
+        ntime = #{ntime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where nid = #{nid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.News">
+    update t_news
+    set name = #{name,jdbcType=VARCHAR},
+      ncontent = #{ncontent,jdbcType=VARCHAR},
+      ntime = #{ntime,jdbcType=TIMESTAMP}
+    where nid = #{nid,jdbcType=INTEGER}
+  </update>
+</mapper>

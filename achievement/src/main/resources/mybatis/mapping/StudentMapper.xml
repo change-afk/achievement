@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Student">
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="sedu" jdbcType="VARCHAR" property="sedu" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.change.achievement.entity.Student">
+    <result column="simg" jdbcType="LONGVARCHAR" property="simg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid, tid, sname, sex, sedu
+  </sql>
+  <sql id="Blob_Column_List">
+    simg
+  </sql>
+  <!-- 新增学生信息 -->
+  <insert id="addStudent" parameterType="com.change.achievement.entity.Student">
+    insert into t_student (tid, sname, sex, sedu, simg)
+    values (#{tid,jdbcType=VARCHAR}, #{sname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{sedu,jdbcType=VARCHAR}, #{simg,jdbcType=LONGVARCHAR})
+  </insert>
+  <!-- 查询数据总条数、分页 -->
+  <select id="getAllPage" resultType="java.lang.Integer">
+    select count(*) from t_student
+  </select>
+  <!-- 查询分页后的数据 -->
+  <select id="selectByPage" parameterType="java.lang.Integer" resultType="com.change.achievement.entity.Student">
+    SELECT s.sid,s.sname,s.sex,s.sedu,t.tname
+	FROM t_student s,t_teacher t
+	where s.tid=t.tid
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- id查询学生信息 -->
+  <select id="selectStudentByTid" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_student
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id更新信息 -->
+  <update id="uptStudentById" parameterType="com.change.achievement.entity.Student">
+    update t_student
+    <set>
+      <if test="sedu != null">sedu = #{sedu,jdbcType=VARCHAR},</if>
+      <if test="simg != null">simg = #{simg,jdbcType=LONGVARCHAR},</if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+	<!-- 根据id删除信息 -->  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from t_student
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <!-- 根据id查询学生信息 -->
+  <select id="selectByTid" parameterType="java.lang.String" resultType="com.change.achievement.entity.Student">
+  	select *
+    from t_student
+    where tid = #{tid}
+  </select>
+  <!-- 条件查询数据总条数、分页 -->
+  <select id="getSearchAllPage" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	SELECT count(*) FROM(select s.sid,s.sname,s.sex,s.sedu,t.tname from t_student s,t_teacher t 
+  	where s.tid=t.tid and concat(sname, sedu, tname) like "%"#{msg}"%" )as st 
+  </select>
+   <!-- 条件查询数据分页后展示的数据-->
+  <select id="getSearchPage" parameterType="hashmap" resultMap="BaseResultMap">
+    select s.sid,s.sname,s.sex,s.sedu,t.tname from t_student s,t_teacher t 
+  	where s.tid=t.tid and concat(sname, sedu, tname) like "%"#{msg}"%" 
+    limit #{start},#{size}
+  </select>
+  <!-- 查询数据总条数、分页(教师) -->
+  <select id="getAllPageT" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from t_student where tid = #{tid}
+  </select>
+  <!-- 查询分页后的数据(教师) -->
+  <select id="selectByPageT" parameterType="hashmap" resultType="com.change.achievement.entity.Student">
+    SELECT s.sid,s.sname,s.sex,s.sedu,t.tname
+	FROM t_student s,t_teacher t
+	where s.tid=t.tid and t.tid = #{tid}
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+   <!-- 条件查询数据总条数、分页(教师) -->
+  <select id="getSearchAllPageT" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	SELECT count(*) FROM(select s.sid,s.sname,s.sex,s.sedu,t.tname from t_student s,t_teacher t 
+  	where s.tid=t.tid and t.tid=#{tid} and concat(sname, sedu, tname) like "%"#{msg}"%" )as st 
+  </select>
+   <!-- 条件查询数据分页后展示的数据(教师)-->
+  <select id="getSearchPageT" parameterType="hashmap" resultMap="BaseResultMap">
+    select s.sid,s.sname,s.sex,s.sedu,t.tname from t_student s,t_teacher t 
+  	where s.tid=t.tid and t.tid=#{tid} and concat(sname, sedu, tname) like "%"#{msg}"%" 
+    limit #{start},#{size}
+  </select>
+  
+  
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Student">
+    insert into t_student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="sname != null">
+        sname,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="sedu != null">
+        sedu,
+      </if>
+      <if test="simg != null">
+        simg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null">
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="sedu != null">
+        #{sedu,jdbcType=VARCHAR},
+      </if>
+      <if test="simg != null">
+        #{simg,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.change.achievement.entity.Student">
+    update t_student
+    set tid = #{tid,jdbcType=VARCHAR},
+      sname = #{sname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      sedu = #{sedu,jdbcType=VARCHAR},
+      simg = #{simg,jdbcType=LONGVARCHAR}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Student">
+    update t_student
+    set tid = #{tid,jdbcType=VARCHAR},
+      sname = #{sname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      sedu = #{sedu,jdbcType=VARCHAR}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+</mapper>

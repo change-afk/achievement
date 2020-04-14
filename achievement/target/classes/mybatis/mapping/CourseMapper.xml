@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.CourseMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Course">
+    <id column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="creatTime" jdbcType="VARCHAR" property="creatTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cid, cname, content, creatTime
+  </sql> 
+  <!-- 查询数据总条数、分页 -->
+  <select id="getAllCoursePage" resultType="java.lang.Integer">
+    select COUNT(*) from t_course
+  </select>
+   <!-- 查询数据分页后展示的数据-->
+  <select id="selectCourseByPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_course limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+   <!-- 查询全部数据-->
+  <select id="selectAllCourse" resultMap="BaseResultMap">
+    select * from t_course 
+  </select>
+  <!-- 新增展示信息列 -->
+  <insert id="insertCourse" parameterType="com.change.achievement.entity.Course">
+    insert into t_course (cname, content, creatTime)
+    values (#{cname,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{creatTime,jdbcType=VARCHAR})
+  </insert>
+  <!-- 删除展示信息列 -->
+   <delete id="delPassById" parameterType="java.lang.Integer">
+    delete from t_course
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <!-- 根据教师id查询全部展示信息列 -->
+  <select id="selectByTid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from t_course c,t_teacher_course tc WHERE c.cid=tc.cid and tc.tid=#{tid}
+  </select>
+  
+  
+  <!-- 未使用 -->
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Course">
+    insert into t_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="creatTime != null">
+        creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Course">
+    update t_course
+    <set>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        creatTime = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Course">
+    update t_course
+    set cname = #{cname,jdbcType=VARCHAR},
+      creatTime = #{creatTime,jdbcType=TIMESTAMP}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+</mapper>

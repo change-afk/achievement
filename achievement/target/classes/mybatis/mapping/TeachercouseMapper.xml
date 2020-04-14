@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.TeachercouseMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Teachercouse">
+    <id column="tcid" jdbcType="INTEGER" property="tcid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tcid, tid, cid
+  </sql>
+  <!-- 查询分页后的数据 -->
+  <select id="selectByPage" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+    select d.tid,d.tname,
+	GROUP_CONCAT(
+	c.cname  ORDER BY c.cname  DESC SEPARATOR ','
+	)as cname
+	from(
+	select t.tid,t.tname,tc.cid
+	from t_teacher t LEFT JOIN t_teacher_course tc on t.tid=tc.tid
+	) as d LEFT JOIN t_course c on d.cid=c.cid GROUP BY d.tid
+	limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 查询分页后的数据(教师) -->
+  <select id="selectByPageT" parameterType="java.lang.String" resultType="java.util.HashMap">
+    select d.tid,d.tname,
+	GROUP_CONCAT(
+	c.cname  ORDER BY c.cname  DESC SEPARATOR ','
+	)as cname
+	from(
+	select t.tid,t.tname,tc.cid
+	from t_teacher t LEFT JOIN t_teacher_course tc on t.tid=tc.tid
+	) as d LEFT JOIN t_course c on d.cid=c.cid where d.tid=#{tid,jdbcType=VARCHAR} GROUP BY d.tid
+  </select>
+  <!-- 条件查询数据总条数、分页 -->
+  <select id="getSearchAllPage" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	SELECT count(*) from(
+		select d.tid,d.tname,
+		GROUP_CONCAT(
+			c.cname  ORDER BY c.cname  DESC SEPARATOR ','
+		)as cname
+		from(
+			select t.tid,t.tname,tc.cid
+			from t_teacher t LEFT JOIN t_teacher_course tc on t.tid=tc.tid
+		) as d LEFT JOIN t_course c on d.cid=c.cid 
+		where concat(d.tid,d.tname) like "%"#{msg}"%" GROUP BY d.tid
+	)as countable
+  </select>
+   <!-- 条件查询数据分页后展示的数据-->
+  <select id="getSearchPage" parameterType="hashmap" resultType="java.util.HashMap">
+	select d.tid,d.tname,
+	GROUP_CONCAT(
+		c.cname  ORDER BY c.cname  DESC SEPARATOR ','
+	)as cname
+	from(
+		select t.tid,t.tname,tc.cid
+		from t_teacher t LEFT JOIN t_teacher_course tc on t.tid=tc.tid
+	) as d LEFT JOIN t_course c on d.cid=c.cid 
+	where concat(d.tid,d.tname) like "%"#{msg}"%" GROUP BY d.tid
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id删除展示信息 -->
+  <delete id="delTC" parameterType="java.lang.String">
+    delete from t_teacher_course
+    where tid = #{tid}
+  </delete>
+  <!-- 新增展示信息 -->
+  <insert id="addTC" parameterType="com.change.achievement.entity.Teachercouse">
+    insert into t_teacher_course (tid, cid)
+    values (#{tid,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_teacher_course
+    where tcid = #{tcid,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Teachercouse">
+    insert into t_teacher_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tcid != null">
+        tcid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tcid != null">
+        #{tcid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Teachercouse">
+    update t_teacher_course
+    <set>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where tcid = #{tcid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Teachercouse">
+    update t_teacher_course
+    set tid = #{tid,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER}
+    where tcid = #{tcid,jdbcType=INTEGER}
+  </update>
+</mapper>

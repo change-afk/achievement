@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.ResearchMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Research">
+    <id column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="rdesc" jdbcType="VARCHAR" property="rdesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rid, tid, rdesc
+  </sql>
+  <!-- 查询研究方向 -->
+  <select id="selectResearch" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_research
+    where tid = #{tid,jdbcType=VARCHAR}
+  </select>
+  <!-- 增加研究方向 -->
+  <insert id="addResearch" parameterType="com.change.achievement.entity.Research">
+    insert into t_research (tid, rdesc)
+    values (#{tid,jdbcType=VARCHAR}, #{rdesc,jdbcType=VARCHAR})
+  </insert>
+  <!-- 删除研究方向 -->
+  <delete id="delResearch" parameterType="java.lang.Integer">
+    delete from t_research
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Research">
+    insert into t_research
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="rdesc != null">
+        rdesc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="rdesc != null">
+        #{rdesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Research">
+    update t_research
+    <set>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="rdesc != null">
+        rdesc = #{rdesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Research">
+    update t_research
+    set tid = #{tid,jdbcType=VARCHAR},
+      rdesc = #{rdesc,jdbcType=VARCHAR}
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+</mapper>

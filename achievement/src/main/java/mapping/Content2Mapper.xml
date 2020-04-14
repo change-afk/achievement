@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.Content2Mapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Content2">
+    <id column="tcoid" jdbcType="INTEGER" property="tcoid" />
+    <result column="tcname" jdbcType="VARCHAR" property="tcname" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="tcontent" jdbcType="VARCHAR" property="tcontent" />
+    <result column="creatime" jdbcType="VARCHAR" property="creatime" />
+    <result column="comefrom" jdbcType="VARCHAR" property="comefrom" />
+    <result column="money" jdbcType="VARCHAR" property="money" />
+    <result column="outschool" jdbcType="VARCHAR" property="outschool" />
+    <result column="sendtime" jdbcType="VARCHAR" property="sendtime" />
+    <result column="sendname" jdbcType="VARCHAR" property="sendname" />
+    <result column="sendtype" jdbcType="VARCHAR" property="sendtype" />
+    <result column="belongunit" jdbcType="VARCHAR" property="belongunit" />
+    <result column="belongtype" jdbcType="VARCHAR" property="belongtype" />
+    <result column="belongnum" jdbcType="VARCHAR" property="belongnum" />
+    <result column="belongtime" jdbcType="VARCHAR" property="belongtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tcoid, tcname, cid, tid, tcontent, creatime, comefrom, money, outschool, sendtime, 
+    sendname, sendtype, belongunit, belongtype, belongnum, belongtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_content
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_content
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.change.achievement.entity.Content2">
+    insert into t_content (tcoid, tcname, cid, 
+      tid, tcontent, creatime, 
+      comefrom, money, outschool, 
+      sendtime, sendname, sendtype, 
+      belongunit, belongtype, belongnum, 
+      belongtime)
+    values (#{tcoid,jdbcType=INTEGER}, #{tcname,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, 
+      #{tid,jdbcType=VARCHAR}, #{tcontent,jdbcType=VARCHAR}, #{creatime,jdbcType=VARCHAR}, 
+      #{comefrom,jdbcType=VARCHAR}, #{money,jdbcType=VARCHAR}, #{outschool,jdbcType=VARCHAR}, 
+      #{sendtime,jdbcType=VARCHAR}, #{sendname,jdbcType=VARCHAR}, #{sendtype,jdbcType=VARCHAR}, 
+      #{belongunit,jdbcType=VARCHAR}, #{belongtype,jdbcType=VARCHAR}, #{belongnum,jdbcType=VARCHAR}, 
+      #{belongtime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Content2">
+    insert into t_content
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tcoid != null">
+        tcoid,
+      </if>
+      <if test="tcname != null">
+        tcname,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="tcontent != null">
+        tcontent,
+      </if>
+      <if test="creatime != null">
+        creatime,
+      </if>
+      <if test="comefrom != null">
+        comefrom,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="outschool != null">outschool,</if>
+      <if test="sendtime != null">sendtime,</if>
+      <if test="sendname != null">sendname,</if>
+      <if test="sendtype != null">sendtype,</if>
+      <if test="belongunit != null">belongunit,</if>
+      <if test="belongtype != null">belongtype,</if>
+      <if test="belongnum != null">belongnum,</if>
+      <if test="belongtime != null">belongtime,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tcoid != null">
+        #{tcoid,jdbcType=INTEGER},
+      </if>
+      <if test="tcname != null">
+        #{tcname,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="tcontent != null">
+        #{tcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="creatime != null">
+        #{creatime,jdbcType=VARCHAR},
+      </if>
+      <if test="comefrom != null">
+        #{comefrom,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="outschool != null">
+        #{outschool,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null">#{sendtime,jdbcType=VARCHAR},</if>
+      <if test="sendname != null">#{sendname,jdbcType=VARCHAR},</if>
+      <if test="sendtype != null">#{sendtype,jdbcType=VARCHAR},</if>
+      <if test="belongunit != null">#{belongunit,jdbcType=VARCHAR},</if>
+      <if test="belongtype != null">#{belongtype,jdbcType=VARCHAR},</if>
+      <if test="belongnum != null">#{belongnum,jdbcType=VARCHAR},</if>
+      <if test="belongtime != null">#{belongtime,jdbcType=VARCHAR},</if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Content2">
+    update t_content
+    <set>
+      <if test="tcname != null">
+        tcname = #{tcname,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="tcontent != null">
+        tcontent = #{tcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="creatime != null">
+        creatime = #{creatime,jdbcType=VARCHAR},
+      </if>
+      <if test="comefrom != null">
+        comefrom = #{comefrom,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="outschool != null">
+        outschool = #{outschool,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null">
+        sendtime = #{sendtime,jdbcType=VARCHAR},
+      </if>
+      <if test="sendname != null">
+        sendname = #{sendname,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtype != null">
+        sendtype = #{sendtype,jdbcType=VARCHAR},
+      </if>
+      <if test="belongunit != null">
+        belongunit = #{belongunit,jdbcType=VARCHAR},
+      </if>
+      <if test="belongtype != null">
+        belongtype = #{belongtype,jdbcType=VARCHAR},
+      </if>
+      <if test="belongnum != null">
+        belongnum = #{belongnum,jdbcType=VARCHAR},
+      </if>
+      <if test="belongtime != null">
+        belongtime = #{belongtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Content2">
+    update t_content
+    set tcname = #{tcname,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER},
+      tid = #{tid,jdbcType=VARCHAR},
+      tcontent = #{tcontent,jdbcType=VARCHAR},
+      creatime = #{creatime,jdbcType=VARCHAR},
+      comefrom = #{comefrom,jdbcType=VARCHAR},
+      money = #{money,jdbcType=VARCHAR},
+      outschool = #{outschool,jdbcType=VARCHAR},
+      sendtime = #{sendtime,jdbcType=VARCHAR},
+      sendname = #{sendname,jdbcType=VARCHAR},
+      sendtype = #{sendtype,jdbcType=VARCHAR},
+      belongunit = #{belongunit,jdbcType=VARCHAR},
+      belongtype = #{belongtype,jdbcType=VARCHAR},
+      belongnum = #{belongnum,jdbcType=VARCHAR},
+      belongtime = #{belongtime,jdbcType=VARCHAR}
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </update>
+</mapper>

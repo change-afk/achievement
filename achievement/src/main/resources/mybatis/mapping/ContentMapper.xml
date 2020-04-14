@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.ContentMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Content">
+    <id column="tcoid" jdbcType="INTEGER" property="tcoid" />
+    <result column="tcname" jdbcType="VARCHAR" property="tcname" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="tcontent" jdbcType="VARCHAR" property="tcontent" />
+    <result column="creatime" jdbcType="VARCHAR" property="creatime" />
+    <result column="comefrom" jdbcType="VARCHAR" property="comefrom" />
+    <result column="money" jdbcType="VARCHAR" property="money" />
+    <result column="outschool" jdbcType="VARCHAR" property="outschool" />
+    <result column="sendtime" jdbcType="VARCHAR" property="sendtime" />
+    <result column="sendname" jdbcType="VARCHAR" property="sendname" /> 
+    <result column="sendtype" jdbcType="VARCHAR" property="sendtype" />
+    <result column="belongunit" jdbcType="VARCHAR" property="belongunit" />
+    <result column="belongtype" jdbcType="VARCHAR" property="belongtype" />
+    <result column="belongnum" jdbcType="VARCHAR" property="belongnum" />
+    <result column="belongtime" jdbcType="VARCHAR" property="belongtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tcoid, tcname, cid, tid, tcontent, creatime, comefrom, money, outschool
+  </sql>
+  <!-- 新增成果信息 -->
+   <insert id="addContent" parameterType="com.change.achievement.entity.Content">
+    insert into t_content
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tcoid != null || tcoid != ''">tcoid,</if>
+      <if test="tcname != null || tcname != ''">tcname,</if>
+      <if test="cid != null || cid != ''">cid,</if>
+      <if test="tid != null || tid != ''">tid,</if>
+      <if test="tcontent != null || tcontent != ''">tcontent,</if>
+      <if test="creatime != null || creatime != ''">creatime,</if>
+      <if test="comefrom != null || comefrom != ''">comefrom,</if>
+      <if test="money != null || money != ''">money,</if>
+      <if test="outschool != null || outschool != ''">outschool,</if>
+      <if test="sendtime != null || sendtime != ''">sendtime,</if>
+      <if test="sendname != null || sendname != ''">sendname,</if>
+      <if test="sendtype != null || sendtype != ''">sendtype,</if>
+      <if test="belongunit != null || belongunit != ''">belongunit,</if>
+      <if test="belongtype != null || belongtype != ''">belongtype,</if>
+      <if test="belongnum != null || belongnum != ''">belongnum,</if>
+      <if test="belongtime != null || belongtime != ''">belongtime,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tcoid != null || tcoid != ''">#{tcoid,jdbcType=INTEGER},</if>
+      <if test="tcname != null || tcname != ''">#{tcname,jdbcType=VARCHAR},</if>
+      <if test="cid != null || cid != ''">#{cid,jdbcType=INTEGER},</if>
+      <if test="tid != null || tid != ''">#{tid,jdbcType=VARCHAR},</if>
+      <if test="tcontent != null || tcontent != ''">#{tcontent,jdbcType=VARCHAR},</if>
+      <if test="creatime != null || creatime != ''">#{creatime,jdbcType=VARCHAR},</if>
+      <if test="comefrom != null || comefrom != ''">#{comefrom,jdbcType=VARCHAR},</if>
+      <if test="money != null || money != ''">#{money,jdbcType=VARCHAR},</if>
+      <if test="outschool != null || outschool != ''">#{outschool,jdbcType=VARCHAR},</if>
+      <if test="sendtime != null || sendtime != ''">#{sendtime,jdbcType=VARCHAR},</if>
+      <if test="sendname != null || sendname != ''">#{sendname,jdbcType=VARCHAR},</if>
+      <if test="sendtype != null || sendtype != ''">#{sendtype,jdbcType=VARCHAR},</if>
+      <if test="belongunit != null || belongunit != ''">#{belongunit,jdbcType=VARCHAR},</if>
+      <if test="belongtype != null || belongtype != ''">#{belongtype,jdbcType=VARCHAR},</if>
+      <if test="belongnum != null || belongnum != ''">#{belongnum,jdbcType=VARCHAR},</if>
+      <if test="belongtime != null || belongtime != ''">#{belongtime,jdbcType=VARCHAR},</if>
+    </trim>
+  </insert>
+   <!-- <insert id="addContent" parameterType="com.change.achievement.entity.Content">
+    insert into t_content (tcname, cid, tid, tcontent)
+    values (#{tcname,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, #{tid,jdbcType=VARCHAR}, #{tcontent,jdbcType=VARCHAR})
+  </insert> -->
+   <!-- 查询数据总条数、分页 -->
+  <select id="getPage" resultType="java.lang.Integer">
+    select COUNT(*) from t_content
+  </select>
+   <!-- 查询数据分页后展示的数据-->
+  <select id="selectPage" parameterType="java.lang.Integer" resultType="com.change.achievement.entity.Content">
+    select tc.tcoid,t.tid,t.tname,c.cname,tc.tcname from t_content tc,t_course c,t_teacher t 
+	where t.tid=tc.tid and c.cid=tc.cid
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id查询信息-->
+  <select id="selContentById" parameterType="java.lang.Integer" resultType="com.change.achievement.entity.Content">
+    select t.tid,t.tname,c.cname,tc.* from t_content tc,t_course c,t_teacher t 
+	where t.tid=tc.tid and c.cid=tc.cid and tcoid = #{tcoid,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id修改内容 -->
+  <update id="uptContent" parameterType="com.change.achievement.entity.Content">
+    update t_content
+    <set> 
+   	  <if test="tcontent != null || tcontent != ''">tcontent = #{tcontent,jdbcType=VARCHAR},</if>
+   	  <if test="creatime != null || creatime != ''">creatime = #{creatime,jdbcType=VARCHAR},</if>
+      <if test="comefrom != null || comefrom != ''">comefrom = #{comefrom,jdbcType=VARCHAR},</if>
+      <if test="money != null || money != ''">money = #{money,jdbcType=VARCHAR},</if>
+      <if test="outschool != null || outschool != ''">outschool = #{outschool,jdbcType=VARCHAR},</if>
+      <if test="sendtime != null || sendtime != ''">sendtime = #{sendtime,jdbcType=VARCHAR},</if>
+      <if test="sendname != null || sendname != ''">sendname = #{sendname,jdbcType=VARCHAR},</if>
+      <if test="sendtype != null || sendtype != ''">sendtype = #{sendtype,jdbcType=VARCHAR},</if>
+      <if test="belongunit != null || belongunit != ''">belongunit = #{belongunit,jdbcType=VARCHAR},</if>
+      <if test="belongtype != null || belongtype != ''">belongtype = #{belongtype,jdbcType=VARCHAR},</if>
+      <if test="belongnum != null || belongnum != ''">belongnum = #{belongnum,jdbcType=VARCHAR},</if>
+      <if test="belongtime != null || belongtime != ''">belongtime = #{belongtime,jdbcType=VARCHAR},</if>
+     </set>
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </update>
+  <!-- 根据id删除成果信息 -->
+  <delete id="delContentById" parameterType="java.lang.Integer">
+    delete from t_content
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </delete>
+   <!-- 条件查询数据总条数、分页 -->
+  <select id="getSearchPage" parameterType="hashmap" resultType="java.lang.Integer">
+    select count(*) from (
+	    select tc.tcoid,t.tid,t.tname,c.cname,tc.tcname,tc.tcontent from t_content tc,t_course c,t_teacher t 
+	    where t.tid=tc.tid and c.cid=tc.cid 
+	    <if test="tname != null || tname != ''">and t.tname like "%"#{tname}"%"</if>
+		<if test="tid != null || tid != ''">and t.tid like "%"#{tid}"%"</if>
+		<if test="cid != 0">and tc.cid=#{cid}</if>
+    )as at
+  </select>
+   <!-- 条件查询数据分页后展示的数据-->
+  <select id="selectSearchPage" parameterType="hashmap" resultType="com.change.achievement.entity.Content">
+    select tc.tcoid,t.tid,t.tname,c.cname,tc.tcname,tc.tcontent from t_content tc,t_course c,t_teacher t 
+	where t.tid=tc.tid and c.cid=tc.cid
+	<if test="tname != null || tname != ''">and t.tname like "%"#{tname}"%"</if>
+	<if test="tid != null || tid != ''">and t.tid like "%"#{tid}"%"</if>
+	<if test="cid != 0">and tc.cid=#{cid}</if>
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+   <!-- 条件查询数据总条数、分页(教师) -->
+  <select id="getSearchPageT" parameterType="hashmap" resultType="java.lang.Integer">
+    select count(*) from (
+	    select tc.tcoid,t.tid,t.tname,c.cname,tc.tcname,tc.tcontent from t_content tc,t_course c,t_teacher t 
+	    where t.tid=tc.tid and c.cid=tc.cid and t.tid=#{tid} 
+		<if test="cid != 0">and tc.cid=#{cid}</if>
+    )as at
+  </select>
+   <!-- 条件查询数据分页后展示的数据(教师)-->
+  <select id="selectSearchPageT" parameterType="hashmap" resultType="com.change.achievement.entity.Content">
+    select tc.tcoid,t.tid,t.tname,c.cname,tc.tcname,tc.tcontent from t_content tc,t_course c,t_teacher t 
+	where t.tid=tc.tid and c.cid=tc.cid and t.tid=#{tid} 
+	<if test="cid != 0">and tc.cid=#{cid}</if>
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+   <!-- 查询数据总条数、分页(教师) -->
+  <select id="getPageT" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select COUNT(*) from t_content where tid=#{tid} 
+  </select>
+   <!-- 查询数据分页后展示的数据(教师)-->
+  <select id="selectPageT" parameterType="hashmap" resultType="com.change.achievement.entity.Content">
+    select tc.tcoid,t.tid,t.tname,c.cname,tc.tcname from t_content tc,t_course c,t_teacher t 
+	where t.tid=tc.tid and c.cid=tc.cid and t.tid=#{tid} 
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 前台数据查询 -->
+  <select id="selectBy2IdCount" parameterType="hashmap" resultType="java.lang.Integer">
+    select count(*) from t_content
+	where cid=#{cid} and tid=#{tid}
+  </select>
+   <!-- 前台数据查询-->
+  <select id="selectBy2Id" parameterType="hashmap" resultType="com.change.achievement.entity.Content">
+    select * from t_content
+	where  cid=#{cid} and tid=#{tid}
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 前台查询全部 -->
+  <select id="selectAllCount" parameterType="hashmap" resultType="java.lang.Integer">
+    select count(*) from t_content
+	where cid=#{cid}
+  </select>
+   <!-- 前台查询全部-->
+  <select id="selectAll" parameterType="hashmap" resultType="com.change.achievement.entity.Content">
+    select * from t_content
+	where  cid=#{cid} ORDER BY tcoid DESC 
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Content">
+    insert into t_content
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tcoid != null">
+        tcoid,
+      </if>
+      <if test="tcname != null">
+        tcname,
+      </if>
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="tcontent != null">
+        tcontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tcoid != null">
+        #{tcoid,jdbcType=INTEGER},
+      </if>
+      <if test="tcname != null">
+        #{tcname,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="tcontent != null">
+        #{tcontent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Content">
+    update t_content
+    <set>
+      <if test="tcname != null">
+        tcname = #{tcname,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null">
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="tcontent != null">
+        tcontent = #{tcontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tcoid = #{tcoid,jdbcType=INTEGER}
+  </update>
+</mapper>

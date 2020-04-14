@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.SocialMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Social">
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="sdesc" jdbcType="VARCHAR" property="sdesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sid, tid, sdesc
+  </sql>
+  <!-- 查询社会兼职 -->
+  <select id="selectSocial" parameterType="java.lang.String" resultMap="BaseResultMap"> 
+    select 
+    <include refid="Base_Column_List" />
+    from t_social
+    where tid = #{tid,jdbcType=VARCHAR}
+  </select>
+  <!-- 增加社会兼职 -->
+  <insert id="addSocial" parameterType="com.change.achievement.entity.Social">
+    insert into t_social (tid, sdesc)
+    values (#{tid,jdbcType=VARCHAR}, #{sdesc,jdbcType=VARCHAR})
+  </insert>
+  <!-- 删除社会兼职 -->
+  <delete id="delSocial" parameterType="java.lang.Integer">
+    delete from t_social
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.change.achievement.entity.Social">
+    insert into t_social
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="sdesc != null">
+        sdesc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="sdesc != null">
+        #{sdesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.change.achievement.entity.Social">
+    update t_social
+    <set>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=VARCHAR},
+      </if>
+      <if test="sdesc != null">
+        sdesc = #{sdesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.change.achievement.entity.Social">
+    update t_social
+    set tid = #{tid,jdbcType=VARCHAR},
+      sdesc = #{sdesc,jdbcType=VARCHAR}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+</mapper>

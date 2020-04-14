@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.achievement.mapper.TeacherMapper">
+  <resultMap id="BaseResultMap" type="com.change.achievement.entity.Teacher">
+    <id column="tid" jdbcType="VARCHAR" property="tid" />
+    <result column="tname" jdbcType="VARCHAR" property="tname" />
+    <result column="tsex" jdbcType="VARCHAR" property="tsex" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="tprofession" jdbcType="VARCHAR" property="tprofession" />
+    <result column="tunit" jdbcType="VARCHAR" property="tunit" />
+    <result column="tintime" jdbcType="VARCHAR" property="tintime" />
+    <result column="tdegree" jdbcType="VARCHAR" property="tdegree" />
+    <result column="tmajor" jdbcType="VARCHAR" property="tmajor" />
+    <result column="tschool" jdbcType="VARCHAR" property="tschool" />
+    <result column="tmail" jdbcType="VARCHAR" property="tmail" />
+    <result column="tplace" jdbcType="VARCHAR" property="tplace" />
+    <result column="tpersonal" jdbcType="VARCHAR" property="tpersonal" />
+    <result column="tgroup" jdbcType="VARCHAR" property="tgroup" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tid, tname, tsex, telephone, tprofession, tunit, tintime, tdegree, tmajor, tschool, 
+    tmail, tplace, tpersonal, tgroup
+  </sql>
+  <sql id="Blob_Column_List">
+    timg
+  </sql>
+  <!-- 插入教师数据 -->
+  <insert id="insert" parameterType="com.change.achievement.entity.Teacher">
+ 	 insert into t_teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tid != null and tid !=''">tid,</if>
+      <if test="tname != null and tname != ''">tname,</if>
+      <if test="tsex != null and tsex != ''">tsex,</if>
+      <if test="timg != null and timg != ''">timg,</if>
+      <if test="telephone != null and telephone != ''">telephone,</if>
+      <if test="tprofession != null and tprofession != ''">tprofession,</if>
+      <if test="tunit != null and tunit != ''">tunit,</if>
+      <if test="tintime != null and tintime != ''">tintime,</if>
+      <if test="tdegree != null and tdegree != ''">tdegree,</if>
+      <if test="tmajor != null and tmajor != ''">tmajor,</if>
+      <if test="tschool != null and tschool != ''">tschool,</if>
+      <if test="tmail != null and tmail != ''">tmail,</if>
+      <if test="tplace != null and tplace != ''">tplace,</if>
+      <if test="tpersonal != null and tpersonal != ''">tpersonal,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tid != null and tid !=''"> #{tid,jdbcType=VARCHAR}, </if>
+      <if test="tname != null and tname != ''"> #{tname,jdbcType=VARCHAR}, </if>
+      <if test="tsex != null and tsex != ''"> #{tsex,jdbcType=VARCHAR}, </if>
+      <if test="timg != null and timg != ''"> #{timg}, </if>
+      <if test="telephone != null and telephone != ''"> #{telephone,jdbcType=VARCHAR}, </if>
+      <if test="tprofession != null and tprofession != ''"> #{tprofession,jdbcType=VARCHAR}, </if>
+      <if test="tunit != null and tunit != ''"> #{tunit,jdbcType=VARCHAR}, </if>
+      <if test="tintime != null and tintime != ''"> #{tintime,jdbcType=VARCHAR}, </if>
+      <if test="tdegree != null and tdegree != ''"> #{tdegree,jdbcType=VARCHAR}, </if>
+      <if test="tmajor != null and tmajor != ''"> #{tmajor,jdbcType=VARCHAR}, </if>
+      <if test="tschool != null and tschool != ''"> #{tschool,jdbcType=VARCHAR}, </if>
+      <if test="tmail != null and tmail != ''"> #{tmail,jdbcType=VARCHAR}, </if>
+      <if test="tplace != null and tplace != ''"> #{tplace,jdbcType=VARCHAR}, </if>
+      <if test="tpersonal != null and tpersonal != ''"> #{tpersonal,jdbcType=VARCHAR}, </if>
+    </trim>
+  </insert>
+  <!-- 查询数据总条数、分页 -->
+  <select id="getAllPage" resultType="java.lang.Integer">
+    select count(*) from t_teacher
+  </select>
+  <!-- 查询分页后的数据 -->
+  <select id="selectByPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from t_teacher
+    limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+  </select>
+  <!-- 根据id查询数据 -->
+  <select id="selectTeacherByTid" parameterType="java.lang.String" resultType="com.change.achievement.entity.Teacher">
+    select * from t_teacher
+    where tid = #{tid,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据id修改信息 -->
+  <update id="uptTeacher" parameterType="com.change.achievement.entity.Teacher">
+    update t_teacher
+    set tname = #{tname,jdbcType=VARCHAR},
+      tsex = #{tsex,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      timg = #{timg},
+      tprofession = #{tprofession,jdbcType=VARCHAR},
+      tunit = #{tunit,jdbcType=VARCHAR},
+      tintime = #{tintime,jdbcType=VARCHAR},
+      tdegree = #{tdegree,jdbcType=VARCHAR},
+      tmajor = #{tmajor,jdbcType=VARCHAR},
+      tschool = #{tschool,jdbcType=VARCHAR},
+      tmail = #{tmail,jdbcType=VARCHAR},
+      tplace = #{tplace,jdbcType=VARCHAR},
+      tpersonal = #{tpersonal,jdbcType=VARCHAR},
+      tgroup = #{tgroup,jdbcType=VARCHAR}
+    where tid = #{tid,jdbcType=VARCHAR}
+  </update>
+  <!-- 根据id删除信息 -->
+  <delete id="delTeacherById" parameterType="java.lang.String">
+    delete from t_teacher
+    where tid = #{tid,jdbcType=VARCHAR}
+  </delete>
+   <!-- 条件查询数据总条数、分页 -->
+  <select id="getSearchAllPage" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(*) from t_teacher
+  	where concat(tid, tname, tprofession, tunit, tmajor, tdegree) like "%"#{msg}"%"
+  </select>
+   <!-- 条件查询数据分页后展示的数据-->
+  <select id="getSearchPage" parameterType="hashmap" resultMap="BaseResultMap">
+    select *
+    from t_teacher where concat(tid, tname, tprofession, tunit, tmajor, tdegree) like "%"#{msg}"%"
+    limit #{start},#{size}
+  </select>
+
+</mapper>
